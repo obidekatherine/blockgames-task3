@@ -1,6 +1,6 @@
 Metadata{
   "name": "META",
-  "image": "https://ipfs.io/ipfs/QmQ1jvepGKFJmpPL1KngJ2JbcEfcvVUodLoGnPnCE38VA7?filename=demonape.png",
+  "image": "https://ipfs.io/ipfs/QmSa2bA6YHFERfKRdSBiXeJUCxN1dabKGsZ8Aabjoojy18?filename=Mutant-Demon.jpg",
   "description": "The META NFT.",
 }
 
