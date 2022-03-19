@@ -2,7 +2,7 @@ NftImage: https://ipfs.io/ipfs/QmSa2bA6YHFERfKRdSBiXeJUCxN1dabKGsZ8Aabjoojy18?fi
 
 ERC20 contract address: https://rinkeby.etherscan.io/address/0x813ec32b8d9263b9b5ee361beeb5468be955e89a#code
 
-ERC721 contract address: https://mumbai.polygonscan.com/address/0x75911062A7C146A256f49B628e7842c154f28Ffe#code
+ERC721 contract address: https://mumbai.polygonscan.com/address/0x92826a3a6872ebd74ac7c8e0d6cf3f50c9fc9187#code
 
 {
     "metadata": {
