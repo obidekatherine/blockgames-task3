@@ -2,35 +2,36 @@
 pragma solidity ^0.8.7;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
+contract MetaNft is ERC721, ERC721URIStorage {
+    using Counters for Counters.Counter;
 
-contract MetaNft is ERC721, Ownable {
-    
-    uint256 public mintPrice = 0.04 ether;
-    uint256 public totalSupply;
-    uint256 public maxSupply;
-    mapping(address => uint256) public mintedWallets;
+    Counters.Counter private _tokenIdCounter;
 
-    constructor() payable ERC721("MetaNft", "ETA") {
-        maxSupply = 3;
-    }
-    
-    function SetMaxSupply(uint256 maxSupply_) external onlyOwner {
-        maxSupply = maxSupply_;
-    }
+    constructor() ERC721("MetaNft", "MTF") {}
 
-    function safeMint(address to) public payable {
-        //convert 0.04eth to wei and input the value before minting
-        require(msg.value == mintPrice, "mint price is 0.04 eth");
-        require(mintedWallets[to] < 3, "max supply exceeded");
-        require(maxSupply > totalSupply, "sold out");
-
-        mintedWallets[to]++;
-        totalSupply++;
-        uint256 tokenId = totalSupply;
+    function safeMint(address to, string memory uri) public {
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
         _safeMint(to, tokenId);
+        _setTokenURI(tokenId, uri);
     }
 
-  
+    // The following functions are overrides required by Solidity.
+
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
+
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
+    }
+
 }
