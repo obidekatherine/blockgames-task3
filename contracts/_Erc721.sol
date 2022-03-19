@@ -1,74 +1,36 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
- 
- 
-contract MetaNFT{
-    string public name;
-    string public symbol;
+pragma solidity ^0.8.7;
 
-    mapping(address => uint256) private _balances;
-    mapping(uint256 => address) private _owners;
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+
+contract MetaNft is ERC721, Ownable {
     
+    uint256 public mintPrice = 0.04 ether;
+    uint256 public totalSupply;
+    uint256 public maxSupply;
+    mapping(address => uint256) public mintedWallets;
 
-    constructor() {
-        name = "Meta";
-        symbol = "MNF";
+    constructor() payable ERC721("MetaNft", "ETA") {
+        maxSupply = 3;
     }
-
-
-
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal virtual {}
-
-    function _afterTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal virtual {}
-
-
-    function _baseURI() internal view virtual returns (string memory) {
-        return "";
-    }
-
-    function ownerOf(uint256 tokenId) public view virtual returns (address) {
-        address owner = _owners[tokenId];
-        require(owner != address(0));
-        return owner;
-    }
-
-    function balanceOf(address owner) public view virtual returns (uint256) {
-        require(owner != address(0));
-        return _balances[owner];
-    }
-
-    function _exists(uint256 tokenId) internal view virtual returns (bool) {
-        return _owners[tokenId] != address(0);
-    }
-
-    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
-
-
-    function mint(address _to, uint256 _tokenId) external {
-    _mint(_to, _tokenId);
-    }
-
-
-    function _mint(address to, uint256 tokenId) internal virtual {
-        require(to != address(0));
-
-        _beforeTokenTransfer(address(0), to, tokenId);
-
-        _balances[to] += 1;
-        _owners[tokenId] = to;
-
-        emit Transfer(address(0), to, tokenId);
-
-        _afterTokenTransfer(address(0), to, tokenId);
-    }
-
     
+    function SetMaxSupply(uint256 maxSupply_) external onlyOwner {
+        maxSupply = maxSupply_;
+    }
+
+    function safeMint(address to) public payable {
+        //convert 0.04eth to wei and input the value before minting
+        require(msg.value == mintPrice, "mint price is 0.04 eth");
+        require(mintedWallets[to] < 3, "max supply exceeded");
+        require(maxSupply > totalSupply, "sold out");
+
+        mintedWallets[to]++;
+        totalSupply++;
+        uint256 tokenId = totalSupply;
+        _safeMint(to, tokenId);
+    }
+
+  
 }
