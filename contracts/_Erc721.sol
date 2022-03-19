@@ -12,11 +12,10 @@ contract MetaNft is ERC721, ERC721URIStorage {
 
     constructor() ERC721("MetaNft", "MTF") {}
 
-    function safeMint(address to, string memory uri) public {
+    function safeMint(address to) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
-        _safeMint(to, tokenId);
-        _setTokenURI(tokenId, uri);
+        _safeMint(to, tokenId);   
     }
 
     // The following functions are overrides required by Solidity.
